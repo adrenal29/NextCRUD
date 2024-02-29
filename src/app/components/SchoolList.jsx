@@ -13,7 +13,8 @@ const SchoolsPage = () => {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/getSchools', { cache: 'no-store' });
-        if (response.ok) {
+        console.log(response)
+        if (response) {
           const data = await response.json();
           console.log(data);
           setSchools(data);
