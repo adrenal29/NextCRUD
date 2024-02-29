@@ -6,17 +6,22 @@ const SchoolsPage = () => {
   const [schools, setSchools] = useState([]);
   const [selectedCity, setSelectedCity] = useState('');
   const [filteredSchools, setFilteredSchools] = useState([]);
+  const [uniqueCities, setUniqueCities] = useState([]);
 
   useEffect(() => {
     // Fetch schools data from the server
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/getSchools',{ cache: 'no-store' });
+        const response = await fetch('/api/getSchools', { cache: 'no-store' });
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
+          console.log(data);
           setSchools(data);
           setFilteredSchools(data); // Initialize filtered schools with all schools
+          
+          // Extract unique cities from schools data
+          const cities = [...new Set(data.map(school => school.city))];
+          setUniqueCities(cities);
         } else {
           throw new Error('Failed to fetch schools data');
         }
@@ -64,9 +69,9 @@ const SchoolsPage = () => {
           className="mt-1 p-2 border rounded-md"
         >
           <option value="">All Cities</option>
-          {/* Add options for each unique city in the schools array */}
-          {schools.map(school => (
-            <option key={school.id} value={school.city}>{school.city}</option>
+          {/* Add options for each unique city in the uniqueCities array */}
+          {uniqueCities.map(city => (
+            <option key={city} value={city}>{city}</option>
           ))}
         </select>
       </div>

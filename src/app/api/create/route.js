@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 async function insertDataIntoDatabase(name, address,city,state,contact,image,email_id) {
   try {
     // Insert data into the database
-    const { rows } = await sql`INSERT INTO schools (name, address, city,state,contact,image,email_id) VALUES (${name}, ${address}, ${city},${state},${contact},${image},${email_id}) RETURNING *;`;
+    const { rows } = await sql`INSERT INTO school (name, address, city,state,contact,image,email_id) VALUES (${name}, ${address}, ${city},${state},${contact},${image},${email_id}) RETURNING *;`;
     return rows[0]; // Return the inserted row
   } catch (error) {
     console.error('Error inserting data:', error);

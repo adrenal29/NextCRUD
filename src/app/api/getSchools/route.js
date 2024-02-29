@@ -1,12 +1,20 @@
 // pages/api/schools.js
 
-import { sql } from "@vercel/postgres";
+// import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+import { Pool } from "pg";
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 export  async function GET(req, res) {
   try {
     // Establish database connection
-    // Replace connection details with your actual database connection configuration
-    const { rows } = await sql`SELECT * FROM schools`;
+    const client = await pool.connect();
+    const { rows } = await client.query(`SELECT * FROM school`);
+    client.release();
     console.log(rows)
     // Return fetched data as JSON response
     return NextResponse.json(rows,{
